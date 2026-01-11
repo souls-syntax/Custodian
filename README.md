@@ -50,15 +50,24 @@ By decoupling user response time from expensive AI processing, CUSTODIAN enables
 * Docker & Docker Compose installed.
 * A `.env` file with `GOOGLE_API_KEY` and `POSTGRES_PASSWORD`.
 
-### Deploy
-```bash
-# 1. Clone the repository
-git clone https://github.com/souls-syntax/Custodian
+**Note:** The ML model is not included in the repository due to size constraints and must be fetched separately.
 
-# 2. Start the build
+### Deploy
+```bash# 1. Clone the repository
+git clone https://github.com/souls-syntax/Custodian
+cd Custodian
+
+# 2. Clone the model from Hugging Face
+git clone https://huggingface.co/souls-syntax/kohai_v1
+
+# 3. Place the model in the expected location
+mkdir -p intelligence/models
+cp -r kohai_v1/* intelligence/models/
+
+# 4. Start the build
 docker-compose up -d --build
 
-# 3. Verify status
+# 5. Verify status
 docker ps
 ```
 ## Limitations
