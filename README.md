@@ -53,7 +53,7 @@ By decoupling user response time from expensive AI processing, CUSTODIAN enables
 ### Deploy
 ```bash
 # 1. Clone the repository
-git clone [https://github.com/souls-syntax/Custodian](https://github.com/souls-syntax/Custodian)
+git clone https://github.com/souls-syntax/Custodian
 
 # 2. Start the build
 docker-compose up -d --build
