@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  redis:
+    image:  redis:7-alpine
+    container_name: custodian_redis
+    restart:  always
+  
+  postgres:
+    image: postgres:15-alpine
+    container_name: custodian_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=template
+    restart: always
+
+  backend: 
+    build:
+      context: ./orchestrator 
+      dockerfile: Dockerfile
+    container_name: custodian_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    environment:
+      - DB_URL=postgres://postgres:postgres@postgres:5432/template?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+      - BERT_URL=http://intelligence:8001
+  intelligence:
+    build:
+      context: ./intelligence
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    container_name: custodian_intelligence
+    restart: always
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: custodian_frontend
+    restart: always
+    ports:
+      - "3001:80"
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: custodian_tunnel
+    restart: unless-stopped
+    command: tunnel run --protocol http2
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN} 
+    depends_on:
+      - backend
+      - frontend
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: custodian_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: custodian_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    restart: always

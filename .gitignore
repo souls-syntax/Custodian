@@ -1,0 +1,5 @@
+.env
+github
+./intelligence/models/
+./intelligence/__pycache__/
+./intelligence/venv-intel/
