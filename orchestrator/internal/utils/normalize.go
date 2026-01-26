@@ -1,14 +1,14 @@
 package utils
 
 import (
-	"strings"
-	"unicode"
 	"crypto/sha256"
 	"encoding/hex"
+	"strings"
+	"unicode"
 )
 
 func NormalizeQuery(s string) string {
-	
+
 	s = strings.TrimSpace(s)
 
 	s = strings.ToLower(s)
@@ -23,4 +23,3 @@ func HashQuery(normalized string) string {
 	return hex.EncodeToString(sum[:])
 
 }
-

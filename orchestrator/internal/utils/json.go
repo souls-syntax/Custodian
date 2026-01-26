@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
-	"encoding/json"
 )
 
 func RespondWithError(w http.ResponseWriter, code int, msg string) {
@@ -13,8 +13,8 @@ func RespondWithError(w http.ResponseWriter, code int, msg string) {
 	type errResponse struct {
 		Error string `json:"error"`
 	}
-	RespondWithJson(w,code,errResponse{
-		Error:msg,
+	RespondWithJson(w, code, errResponse{
+		Error: msg,
 	})
 }
 

@@ -1,24 +1,25 @@
 package service
 
 import (
-	"net/http"
 	"bytes"
 	"context"
 	"encoding/json"
-	"time"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/souls-syntax/Templates/internal/models"
 )
 
 type LlmClient struct {
-	BaseURL	string
-	HttpClient	*http.Client
+	BaseURL    string
+	HttpClient *http.Client
 }
 
 func NewLlmClient(url string) *LlmClient {
 	return &LlmClient{
-		BaseURL: url,
-		HttpClient: &http.Client{Timeout: 60*time.Second},
+		BaseURL:    url,
+		HttpClient: &http.Client{Timeout: 60 * time.Second},
 	}
 }
 
@@ -27,9 +28,9 @@ type llmRequest struct {
 }
 
 type llmResponse struct {
-	Verdict					string	`json:"verdict"`
-	Confidence			float64	`json:"confidence"`
-	Decider					string	`json:"decider"`
+	Verdict    string  `json:"verdict"`
+	Confidence float64 `json:"confidence"`
+	Decider    string  `json:"decider"`
 	// Explanation currently as place holder
 }
 
@@ -49,8 +50,8 @@ func (l *LlmClient) GetAnalysis(ctx context.Context, text string) (models.Decisi
 		return models.Decision{}, err
 	}
 
-	req.Header.Set("Content-Type","application/json")
-	
+	req.Header.Set("Content-Type", "application/json")
+
 	resp, err := l.HttpClient.Do(req)
 	if err != nil {
 		return models.Decision{}, err
@@ -69,8 +70,8 @@ func (l *LlmClient) GetAnalysis(ctx context.Context, text string) (models.Decisi
 	}
 
 	return models.Decision{
-		Verdict: llmResp.Verdict,
+		Verdict:    llmResp.Verdict,
 		Confidence: llmResp.Confidence,
-		Decider:	llmResp.Decider,
+		Decider:    llmResp.Decider,
 	}, nil
 }

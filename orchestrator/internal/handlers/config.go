@@ -1,7 +1,6 @@
 package handlers
 
 import (
-
 	"github.com/souls-syntax/Templates/internal/service"
 )
 

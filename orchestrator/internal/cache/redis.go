@@ -2,18 +2,19 @@ package cache
 
 import (
 	"context"
-	"time"
-	"github.com/souls-syntax/Templates/internal/models"
-	"github.com/redis/go-redis/v9"
 	"encoding/json"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"github.com/souls-syntax/Templates/internal/models"
 )
 
 type RedisCache struct {
-	client				*redis.Client
+	client *redis.Client
 }
 
 func NewRedisCache(client *redis.Client) *RedisCache {
-	return &RedisCache{client:client}
+	return &RedisCache{client: client}
 }
 
 func (r *RedisCache) Get(ctx context.Context, key string) (*models.CacheDecision, bool) {

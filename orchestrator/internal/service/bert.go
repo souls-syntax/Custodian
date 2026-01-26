@@ -1,24 +1,25 @@
 package service
 
 import (
-	"net/http"
 	"bytes"
 	"context"
 	"encoding/json"
-	"time"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/souls-syntax/Templates/internal/models"
 )
 
 type BertClient struct {
-	BaseURL	string
-	HttpClient	*http.Client
+	BaseURL    string
+	HttpClient *http.Client
 }
 
 func NewBertClient(url string) *BertClient {
 	return &BertClient{
-		BaseURL: url,
-		HttpClient: &http.Client{Timeout: 5*time.Second},
+		BaseURL:    url,
+		HttpClient: &http.Client{Timeout: 5 * time.Second},
 	}
 }
 
@@ -27,9 +28,9 @@ type bertRequest struct {
 }
 
 type bertResponse struct {
-	Verdict					string	`json:"verdict"`
-	Confidence			float64	`json:"confidence"`
-	Decider					string	`json:"decider"`
+	Verdict    string  `json:"verdict"`
+	Confidence float64 `json:"confidence"`
+	Decider    string  `json:"decider"`
 }
 
 func (b *BertClient) GetVerdict(ctx context.Context, text string) (models.Decision, error) {
@@ -48,8 +49,8 @@ func (b *BertClient) GetVerdict(ctx context.Context, text string) (models.Decisi
 		return models.Decision{}, err
 	}
 
-	req.Header.Set("Content-Type","application/json")
-	
+	req.Header.Set("Content-Type", "application/json")
+
 	resp, err := b.HttpClient.Do(req)
 	if err != nil {
 		return models.Decision{}, err
@@ -68,8 +69,8 @@ func (b *BertClient) GetVerdict(ctx context.Context, text string) (models.Decisi
 	}
 
 	return models.Decision{
-		Verdict: bertResp.Verdict,
+		Verdict:    bertResp.Verdict,
 		Confidence: bertResp.Confidence,
-		Decider:	bertResp.Decider,
+		Decider:    bertResp.Decider,
 	}, nil
 }

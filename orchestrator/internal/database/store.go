@@ -3,9 +3,10 @@ package database
 import (
 	"database/sql"
 	"errors"
-	"time"
 	"log"
-	_ "github.com/lib/pq"	
+	"time"
+
+	_ "github.com/lib/pq"
 	"github.com/souls-syntax/Templates/internal/models"
 )
 
@@ -22,10 +23,9 @@ func NewStore(connStr string) (*Store, error) {
 		return nil, err
 	}
 
-	return &Store{db:db}, nil
+	return &Store{db: db}, nil
 
 }
-
 
 func (s *Store) Init() error {
 	query := `
@@ -67,7 +67,7 @@ func (s *Store) GetDecision(hash string) (models.Decision, error) {
 	row := s.db.QueryRow(query, hash)
 
 	var d models.Decision
-	
+
 	err := row.Scan(&d.QueryText, &d.Verdict, &d.Confidence, &d.Decider)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

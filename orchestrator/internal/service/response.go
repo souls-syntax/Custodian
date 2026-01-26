@@ -5,15 +5,15 @@ import (
 )
 
 func BuildResponse(dec models.Decision, obs models.Observation) models.VerifyResponse {
-	return models.VerifyResponse {
-		QueryHash:						dec.QueryHash,
-		QueryText:						dec.QueryText,
+	return models.VerifyResponse{
+		QueryHash: dec.QueryHash,
+		QueryText: dec.QueryText,
 
-		DecisionVerdict:			dec.Verdict,
-		DecisionConfidence:		dec.Confidence,
-		DecisionDecider:			dec.Decider,
+		DecisionVerdict:    dec.Verdict,
+		DecisionConfidence: dec.Confidence,
+		DecisionDecider:    dec.Decider,
 
-		ObsSource:						obs.Source,
-		ObsProcessingTimeMs:	obs.ProcessingTimeMs,
+		ObsSource:           obs.Source,
+		ObsProcessingTimeMs: obs.ProcessingTimeMs,
 	}
 }
