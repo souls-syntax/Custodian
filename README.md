@@ -1,3 +1,8 @@
+# PROJECT IS IN HIATUS
+
+<hr>
+
+
 # CUSTODIAN
 ### *High-Performance Distributed Misinformation Detection System*
 
